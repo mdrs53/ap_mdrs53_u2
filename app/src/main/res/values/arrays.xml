@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mark_year">
+        <item>2018</item>
+        <item>2017</item>
+        <item>2016</item>
+        <item>2015</item>
+    </string-array>
+
+
+    <string-array name="module_names">
+        <item>Grundlagen der Informatik</item>
+        <item>Rechnerarchitektur</item>
+        <item>Algorithmen &amp; Datenstrukturen</item>
+        <item>Objektorientierte Programmierung</item>
+        <item>Betriebssysteme</item>
+    </string-array>
+</resources>

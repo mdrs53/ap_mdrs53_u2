@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Leistungen</string>
+    <string name="no_records">Keine Leistungen!</string>
+    <string name="stats">Statistik</string>
+    <string name="add">Leistung anlegen</string>
+    <string name="module_num">Modulnummer</string>
+    <string name="module_name">Modulname</string>
+    <string name="semester">Semester</string>
+    <string name="sommer">Sommersemester</string>
+    <string name="spin">Spin</string>
+    <string name="creditP">Credit Points</string>
+    <string name="note">Note in %</string>
+    <string name="gewichtung">50% Gewichtung</string>
+    <string name="save">Speichern</string>
+    <string name="module_name_not_empty">Modulname eingeben!</string>
+    <string name="module_num_not_empty">Modulnummer eingeben!</string>
+    <string name="credit_points_not_empty">Creditpoints eingeben!</string>
+    <string name="mark_not_empty">Note eingeben!</string>
+    <string name="leistung_senden">Leistung senden</string>
+</resources>
