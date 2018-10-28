@@ -1,9 +1,11 @@
 package de.thm.ap.leistungen;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -38,13 +40,14 @@ public class RecordsActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-
+        Context context = this;
         List<Record> selectedRecords = new ArrayList<>();
         List<Record> records = new RecordDAO(this).findAll();
         super.onStart();
         ArrayAdapter<Record> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_activated_1, records);
         recordsListView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         recordsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         recordsListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
@@ -62,7 +65,46 @@ public class RecordsActivity extends AppCompatActivity {
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 // Respond to clicks on the actions in the CAB
                 switch (item.getItemId()) {
+                    case R.id.action_email:
+                        String bodyMessage = "";
+                        String subject = "Meine Leistungen " + selectedRecords.size();
+                        for (int i = 0; i < selectedRecords.size(); i++) {
+                            bodyMessage += selectedRecords.get(i).toString() + "\n";
+                        }
+                        Intent intent = new Intent(Intent.ACTION_SENDTO);
+                        intent.setData(Uri.parse("mailto:"));
+                        intent.putExtra(Intent.EXTRA_TEXT, bodyMessage);
+                        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                        startActivity(intent);
+                        return true;
                     case R.id.action_delete:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                        builder.setTitle("Löschen");
+                        builder.setMessage("Sind sie sich sicher?");
+
+                        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int which) {
+                                for (int i = 0; i < selectedRecords.size(); i++) {
+                                    new RecordDAO(context).delete(selectedRecords.get(i));
+                                    records.remove(selectedRecords.get(i));
+                                    adapter.remove(selectedRecords.get(i));
+
+                                }
+                            }
+                        });
+
+                        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
                         //deleteSelectedItems();
                         mode.finish(); // Action picked, so close the CAB
                         return true;
