@@ -125,6 +125,7 @@ public class RecordsActivity extends AppCompatActivity {
             public void onDestroyActionMode(ActionMode mode) {
                 // Here you can make any necessary updates to the activity when
                 // the CAB is removed. By default, selected items are deselected/unchecked.
+                selectedRecords.clear();
                 recordsListView.invalidateViews();
             }
 
@@ -152,7 +153,6 @@ public class RecordsActivity extends AppCompatActivity {
 
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

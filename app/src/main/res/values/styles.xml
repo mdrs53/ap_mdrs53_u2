@@ -6,6 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionModeCloseDrawable">@drawable/menu_done</item>
+
+        <item name="actionModeCloseButtonStyle">@style/Widget.AppCompat.ActionButton.CloseMode</item>
     </style>
 
+    <style name="NoCloseButtonActionModeStyle">
+        <item name="android:actionModeCloseDrawable">@drawable/menu_done</item>
+    </style>
 </resources>
