@@ -66,6 +66,9 @@ public class RecordFormActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("request", 0);
+                setResult(RecordsActivity.RESULT_CANCELED, resultIntent);
                 finish();
                 return true;
         }
@@ -126,6 +129,8 @@ public class RecordFormActivity extends AppCompatActivity {
                 new RecordDAO(this).update(record);
             }
             toast.show();
+            Intent resultIntent = new Intent();
+            setResult(RecordsActivity.RESULT_OK, resultIntent);
             finish();
         }
     }

@@ -27,6 +27,11 @@ import de.thm.ap.leistungen.model.Record;
 
 public class RecordsActivity extends AppCompatActivity {
     private ListView recordsListView;
+    private int requestForm = 1;
+    private   List<Record> records;
+    private ArrayAdapter<Record> adapter;
+    private List<Record> selectedRecords;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +41,36 @@ public class RecordsActivity extends AppCompatActivity {
         recordsListView = findViewById(R.id.records_list);
         recordsListView
                 .setEmptyView(findViewById(R.id.records_list_empty));
-    }
-
-    @Override
-    protected void onStart() {
-        Context context = this;
-        List<Record> selectedRecords = new ArrayList<>();
-        List<Record> records = new RecordDAO(this).findAll();
-        super.onStart();
-        ArrayAdapter<Record> adapter = new ArrayAdapter<>(this,
+        records = new RecordDAO(this).findAll();
+        adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_activated_1, records);
         recordsListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        selectedRecords = new ArrayList<>();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // Check which request we're responding to
+
+        if (requestCode == requestForm) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                System.out.println("--------------------- hah ---------------");
+                records = new RecordDAO(this).findAll();
+                adapter.clear();
+                adapter.addAll(records);
+            }
+        }
+    }
+    @Override
+    protected void onStart() {
+        Context context = this;
+
+
+        super.onStart();
         recordsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         recordsListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
@@ -76,6 +99,7 @@ public class RecordsActivity extends AppCompatActivity {
                         intent.putExtra(Intent.EXTRA_TEXT, bodyMessage);
                         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
                         startActivity(intent);
+                        mode.finish();
                         return true;
                     case R.id.action_delete:
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -90,8 +114,8 @@ public class RecordsActivity extends AppCompatActivity {
                                     new RecordDAO(context).delete(selectedRecords.get(i));
                                     records.remove(selectedRecords.get(i));
                                     adapter.remove(selectedRecords.get(i));
-
                                 }
+                                mode.finish(); // Action picked, so close the CAB
                             }
                         });
 
@@ -100,13 +124,12 @@ public class RecordsActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+
                             }
                         });
 
                         AlertDialog alert = builder.create();
                         alert.show();
-                        //deleteSelectedItems();
-                        mode.finish(); // Action picked, so close the CAB
                         return true;
                     default:
                         return false;
@@ -147,7 +170,7 @@ public class RecordsActivity extends AppCompatActivity {
                     Intent intent = new Intent(view.getContext(), RecordFormActivity.class);
                     intent.putExtras(bundle);
                     intent.putExtra("updateMode", true);
-                    startActivity(intent);
+                    startActivityForResult(intent,requestForm);
                 }
             }
 
@@ -167,7 +190,7 @@ public class RecordsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent i = new Intent(this, RecordFormActivity.class);
-                startActivity(i);
+                startActivityForResult(i ,requestForm);
                 return true;
             case R.id.action_stats:
                 List<Record> records = new RecordDAO(this).findAll();
