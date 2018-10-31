@@ -60,6 +60,9 @@ class Stats {
         int newSumCrp = 0;
         int newCrp = 0;
         for (int i = 0; i < records.size(); i++) {
+            if (records.get(i).getMark() == 0) {
+                continue;
+            }
             if (records.get(i).isHalfWeighted()) {
                 newCrp = records.get(i).getCrp() / 2;
                 newSumCrp += newCrp;

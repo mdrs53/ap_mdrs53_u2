@@ -101,16 +101,25 @@ public class RecordFormActivity extends AppCompatActivity {
         } else record.setSummerTerm(false);
         record.setYear(Integer.parseInt(year.getSelectedItem().toString()));
         try {
-            record.setCrp(Integer.parseInt(creditPoints.getText().toString()));
+            tmp = Integer.parseInt(creditPoints.getText().toString());
+            if (tmp > 15) {
+                creditPoints.setError("Höchst. 15 Creditpoints eingeben!");
+                isValid = false;
+            }
+            else {
+                record.setCrp(tmp);
+            }
         } catch (NumberFormatException e) {
-            creditPoints.setError("Creditpoints eingeben!");
+            creditPoints.setError("Höchst. 15 Creditpoints eingeben!");
             isValid = false;
         }
         try {
             tmp = Integer.parseInt(mark.getText().toString());
-            if (tmp < 50 || tmp > 100) {
-                mark.setError("Note muss mind. 50% oder höchst. 100% sein");
-                isValid = false;
+            if (tmp != 0) {
+                if (tmp < 50 || tmp > 100) {
+                    mark.setError("Note muss mind. 50% oder höchst. 100% sein");
+                    isValid = false;
+                }
             } else {
                 record.setMark(tmp);
             }
