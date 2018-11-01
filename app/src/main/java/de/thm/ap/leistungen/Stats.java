@@ -32,6 +32,7 @@ class Stats {
     }
 
     public int getCrpToEnd() {
+        if (crpToEnd < 0) return 0;
         return crpToEnd;
     }
 

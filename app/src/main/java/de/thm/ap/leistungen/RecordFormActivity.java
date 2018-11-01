@@ -93,8 +93,9 @@ public class RecordFormActivity extends AppCompatActivity {
         }
         record.setModuleNum(modulNum.getText().toString().trim());
         if ("".equals(record.getModuleNum())) {
-            modulNum.setError(getString(R.string.module_num_not_empty));
-            isValid = false;
+            record.setModuleNum(" ");
+            /*modulNum.setError(getString(R.string.module_num_not_empty));
+            isValid = false;*/
         }
         if (summer.isChecked()) {
             record.setSummerTerm(true);
@@ -120,9 +121,12 @@ public class RecordFormActivity extends AppCompatActivity {
                     mark.setError("Note muss mind. 50% oder höchst. 100% sein");
                     isValid = false;
                 }
-            } else {
+            }
+            if (isValid) {
                 record.setMark(tmp);
             }
+
+
         } catch (NumberFormatException e) {
             mark.setError("Note muss mind. 50% oder höchst. 100% sein");
             isValid = false;
