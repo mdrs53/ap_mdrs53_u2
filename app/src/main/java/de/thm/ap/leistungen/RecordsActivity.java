@@ -58,7 +58,6 @@ public class RecordsActivity extends AppCompatActivity {
         if (requestCode == requestForm) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                System.out.println("--------------------- hah ---------------");
                 records = new RecordDAO(this).findAll();
                 adapter.clear();
                 adapter.addAll(records);

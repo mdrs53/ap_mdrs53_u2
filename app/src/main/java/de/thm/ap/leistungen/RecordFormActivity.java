@@ -67,7 +67,6 @@ public class RecordFormActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("request", 0);
                 setResult(RecordsActivity.RESULT_CANCELED, resultIntent);
                 finish();
                 return true;
